@@ -1,0 +1,17 @@
+{
+  "name": "professional-backend",
+  "version": "1.0.0",
+  "description": "first backend project for smart switch test",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "learning",
+    "with",
+    "Hitesh",
+    "sir"
+  ],
+  "author": "Sunil",
+  "license": "ISC"
+}
