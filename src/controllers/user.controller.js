@@ -1,5 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
-import {apiError} from "../utils/apiError.js"
+import { apiError } from "../utils/apiError.js"
 import { User } from "..//models/user.model.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { apiResponse } from "../utils/apiRespones.js";
@@ -26,7 +26,7 @@ console.log("E-mail :" , email);
         throw new apiError(400,"All Field are required")
     }
 
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or:[{email},{phone}]
     })
 
@@ -35,7 +35,14 @@ console.log("E-mail :" , email);
     }
 
     const avatarLocalPath = req.files?.avatar[0]?.path ;
-    const coverImageLocalPath = req.files?.coverImage[0]?.path ;
+    //const coverImageLocalPath = req.files?.coverImage[0]?.path ;
+
+    let coverImageLocalPath ;
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length>0) {
+        coverImageLocalPath = req.files.coverImage[0].path 
+    }
+
+    //console.log(req.files);
 
     if (!avatarLocalPath) {
         
@@ -44,7 +51,6 @@ console.log("E-mail :" , email);
 
     const avatar = await uploadOnCloudinary(avatarLocalPath)
     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
     if (!avatar) {
         throw new apiError(400,"Avatar File is Required")
     }
@@ -59,16 +65,16 @@ console.log("E-mail :" , email);
         address,
     })
 
-    const createdUser = await User.findById(user._di).select(
-        "-password - refreshToken"
+    const createdUser = await User.findById(user._id).select(
+        "-password -refreshToken"
     )
-
+    //console.log("User Created !!-1")
     if (!createdUser) {
         throw new apiError(500,"Something Went Wrong While Registering The User...")
     }
-
+    
     res.status(200).json(
-        new apiResponse(200,createdUser,"User Register Successfully...")
+        new apiResponse(200,createdUser,"User Registered Successfully...")
     )
     //res.status(201).json({createdUser})
     //User.findOne({email})
