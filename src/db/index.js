@@ -5,6 +5,7 @@ const connectDB = async ()=>{
     try {
         const connectionInstance = await mongoose.connect(`${process.env.MONGODB_URL}/${DB_NAME}`);
         //const connectionInstance = await mongoose.connect(`mongodb+srv://sunil4us-1:Sunil123@cluster0312.ofcnf.mongodb.net/${DB_NAME}`);
+        //const connectionInstance = await mongoose.connect(`mongodb+srv://sunil4us-1:Sunil123@cluster0312.ofcnf.mongodb.net/smartSwitch-1`);
         console.log(`\n MongoDB Connected !! DB host : ${connectionInstance.connection.host}`);
 
     } catch (error) {
